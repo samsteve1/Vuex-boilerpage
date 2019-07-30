@@ -1934,6 +1934,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1942,7 +1961,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: null,
         email: null,
         password: null
-      }
+      },
+      errors: [],
+      ready: true
     };
   },
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
@@ -1951,7 +1972,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), {
     submit: function submit() {
       this.register({
-        payload: this.form
+        payload: this.form,
+        context: this
       });
     }
   })
@@ -37396,10 +37418,10 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
+                        class: { " is-invalid": _vm.errors.name },
                         attrs: {
                           id: "name",
                           type: "text",
-                          name: "name",
                           autocomplete: "name",
                           autofocus: ""
                         },
@@ -37414,7 +37436,16 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm._m(0)
+                      _vm.errors.name
+                        ? _c(
+                            "span",
+                            {
+                              staticClass: "invalid-feedback",
+                              attrs: { role: "alert" }
+                            },
+                            [_c("strong", [_vm._v(_vm._s(_vm.errors.name[0]))])]
+                          )
+                        : _vm._e()
                     ])
                   ]),
                   _vm._v(" "),
@@ -37439,7 +37470,8 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { id: "email", type: "email", name: "email" },
+                        class: { " is-invalid": _vm.errors.email },
+                        attrs: { id: "email", type: "text" },
                         domProps: { value: _vm.form.email },
                         on: {
                           input: function($event) {
@@ -37451,7 +37483,20 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm._m(1)
+                      _vm.errors.email
+                        ? _c(
+                            "span",
+                            {
+                              staticClass: "invalid-feedback",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _c("strong", [
+                                _vm._v(_vm._s(_vm.errors.email[0]))
+                              ])
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ]),
                   _vm._v(" "),
@@ -37475,7 +37520,8 @@ var render = function() {
                             expression: "form.password"
                           }
                         ],
-                        staticClass: "form-control ",
+                        staticClass: "form-control",
+                        class: { " is-invalid": _vm.errors.password },
                         attrs: {
                           id: "password",
                           type: "password",
@@ -37493,11 +37539,49 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm._m(2)
+                      _vm.errors.password
+                        ? _c(
+                            "span",
+                            {
+                              staticClass: "invalid-feedback",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _c("strong", [
+                                _vm._v(" " + _vm._s(_vm.errors.password[0]))
+                              ])
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(3)
+                  _c("div", { staticClass: "form-group row mb-0" }, [
+                    _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          class: { " disabled": !_vm.ready },
+                          attrs: { type: "submit" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                  " +
+                              _vm._s(
+                                _vm.ready ? "Register" : "Creating account..."
+                              ) +
+                              "\n                                  "
+                          ),
+                          !_vm.ready
+                            ? _c("i", { staticClass: "fa fa-spinner" }, [
+                                _vm._v("spinner")
+                              ])
+                            : _vm._e()
+                        ]
+                      )
+                    ])
+                  ])
                 ]
               )
             ])
@@ -37507,56 +37591,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "span",
-      { staticClass: "invalid-feedback", attrs: { role: "alert" } },
-      [_c("strong")]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "span",
-      { staticClass: "invalid-feedback", attrs: { role: "alert" } },
-      [_c("strong")]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "span",
-      { staticClass: "invalid-feedback", attrs: { role: "alert" } },
-      [_c("strong")]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row mb-0" }, [
-      _c("div", { staticClass: "col-md-6 offset-md-4" }, [
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-          [
-            _vm._v(
-              "\n                                   Register\n                                "
-            )
-          ]
-        )
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -53965,9 +54000,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "register", function() { return register; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shoutOut", function() { return shoutOut; });
 var register = function register(dispatch, _ref) {
-  var payload = _ref.payload;
+  var payload = _ref.payload,
+      context = _ref.context;
+  context.ready = false;
   return axios.post('/api/register', payload).then(function (response) {
-    console.log(response.data);
+    context.ready = true;
+  })["catch"](function (error) {
+    context.errors = error.response.data.errors;
+    context.ready = true;
   });
 };
 var shoutOut = function shoutOut() {

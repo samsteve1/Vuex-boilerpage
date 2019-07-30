@@ -1,6 +1,11 @@
-export const register = ( dispatch ,  {payload} ) => {
+export const register = ( dispatch ,  {payload, context} ) => {
+    context.ready = false
    return axios.post('/api/register', payload).then((response) => {
-       console.log(response.data)
+       
+    context.ready = true
+   }).catch((error) => {
+       context.errors = error.response.data.errors
+       context.ready = true
    })
     
 }
