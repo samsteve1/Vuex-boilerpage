@@ -7,7 +7,7 @@ Vue.use(Router)
 
 const router = new Router({
     routes: routes,
-    mode: 'history'
+    mode: 'hash'
 })
 
 export default router

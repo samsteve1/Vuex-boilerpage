@@ -1,4 +1,5 @@
 import router from './router'
+import store from './vuex'
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -34,6 +35,7 @@ Vue.component('navigation', Navigation);
 
 const app = new Vue({
     router: router,
+    store: store,
     el: '#app',
   
 });

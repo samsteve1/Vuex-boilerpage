@@ -14,25 +14,27 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
+                    <ul class="navbar-nav ml-auto" v-if="!user.authenticated">
+                        <li class="nav-item">
+                            <router-link :to="{name: 'login'}" class="nav-link">Login</router-link>
+                        </li>
+                           
+                        <li class="nav-item">
+                             <router-link :to="{name: 'register'}" class="nav-link">Register</router-link>
+                        </li>
+                           
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
+                    <ul class="navbar-nav ml-auto" v-if="user.authenticated">
+                        <!-- Authentication Links --> 
                             <li class="nav-item">
-                               <router-link :to="{name: 'timeline'}" class="nav-link">Timeline</router-link>
+                               <router-link :to="{name: 'timeline'}" class="nav-link">{{ 'Timeline' }}</router-link>
                             </li>
-
-                            <li class="nav-item">
-                               <router-link :to="{name: 'login'}" class="nav-link">Login</router-link>
-                            </li>
-                           
-                                <li class="nav-item">
-                                    <router-link :to="{name: 'register'}" class="nav-link">Register</router-link>
-                                </li>
-                           
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Steve Idowu <span class="caret"></span>
+                            
+                            <li class="nav-item dropdown" v-if="user.authenticated">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  {{ user.data.name }}</span> <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -54,3 +56,14 @@
         </nav>
     </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+    computed: mapGetters({
+        user: 'auth/user'
+    }),
+    
+}
+</script>
