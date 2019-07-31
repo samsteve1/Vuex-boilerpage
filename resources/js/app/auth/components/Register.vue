@@ -72,8 +72,8 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary" :class="{' disabled': !ready}">
-                                  {{ ready ? 'Register' : 'Creating account...' }}
-                                  <i class="fa fa-spinner" v-if="!ready">spinner</i>
+                                  {{ ready ? 'Register' : 'Creating account' }}
+                                 <font-awesome-icon icon="spinner" class="fa-spin" v-if="!ready"/>
                                 
                                 </button>
                             </div>
@@ -104,13 +104,14 @@ export default {
     methods: {
         ...mapActions({
             register: 'auth/register',
-            shoutOut: 'auth/shoutOut'    
         }),
 
         submit () {
             this.register({
                payload: this.form,
                context: this
+            }).then(() => {
+                this.$router.replace({ name: 'home'})
             })
 
             

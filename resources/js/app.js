@@ -1,5 +1,11 @@
 import router from './router'
 import store from './vuex'
+import localforage from 'localforage'
+
+localforage.config({
+    driver: localforage.LOCALSTORAGE,
+    storeName: 'Vuex-boiler'
+})
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -23,10 +29,21 @@ window.Vue = require('vue');
 
 import App from './components/App.vue';
 import Navigation from './components/Navigation.vue';
+//  font-awesome
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faSpinner, faAlignLeft } from '@fortawesome/free-solid-svg-icons'
+
+
+library.add(faUserSecret, faSpinner, faAlignLeft)
 
 Vue.component('app', App);
 Vue.component('navigation', Navigation);
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
+Vue.config.productionTip = true
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
