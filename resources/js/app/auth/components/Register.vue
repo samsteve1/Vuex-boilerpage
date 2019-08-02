@@ -89,6 +89,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+
 export default {
     data() {
         return {
@@ -110,8 +111,15 @@ export default {
             this.register({
                payload: this.form,
                context: this
-            }).then(() => {
-                this.$router.replace({ name: 'home'})
+            }).then((status) => {
+                switch (status) {
+                    case true:
+                        this.$router.replace({ name: 'home'})
+                        break;
+                
+                    default:
+                        break;
+                }
             })
 
             

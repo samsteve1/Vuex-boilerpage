@@ -50,6 +50,15 @@ Vue.config.productionTip = true
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ store.dispatch('auth/setToken').then(() => {
+     store.dispatch('auth/fetchUser').catch(() => {
+         store.dispatch('auth/clearAuth')
+         router.replace({ name: 'login' })
+     })
+ }).catch(() => {
+    store.dispatch('auth/clearAuth')
+ })
+
 const app = new Vue({
     router: router,
     store: store,
