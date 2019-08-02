@@ -11866,12 +11866,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-//
-//
-//
-//
-//
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -11929,6 +11929,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     user: 'auth/user'
+  }),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    logout: 'auth/logout'
+  }), {
+    signout: function signout() {
+      var _this = this;
+
+      this.logout().then(function () {
+        _this.$router.replace({
+          name: 'home'
+        });
+      });
+    }
   })
 });
 
@@ -50741,14 +50754,41 @@ var render = function() {
                               [
                                 _vm._v(
                                   "\n                              " +
-                                    _vm._s(_vm.user.data.name)
+                                    _vm._s(_vm.user.data.name) +
+                                    " "
                                 ),
-                                _vm._v(" "),
                                 _c("span", { staticClass: "caret" })
                               ]
                             ),
                             _vm._v(" "),
-                            _vm._m(1)
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "dropdown-menu dropdown-menu-right",
+                                attrs: { "aria-labelledby": "navbarDropdown" }
+                              },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.signout($event)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                   Logout\n                                "
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
                           ])
                         : _vm._e()
                     ])
@@ -50780,41 +50820,6 @@ var staticRenderFns = [
         }
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "dropdown-menu dropdown-menu-right",
-        attrs: { "aria-labelledby": "navbarDropdown" }
-      },
-      [
-        _c(
-          "a",
-          {
-            staticClass: "dropdown-item",
-            attrs: {
-              href: "#",
-              onclick:
-                "event.preventDefault();\n                                                 document.getElementById('logout-form').submit();"
-            }
-          },
-          [
-            _vm._v(
-              "\n                                   Logout\n                                "
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c("form", {
-          staticStyle: { display: "none" },
-          attrs: { id: "logout-form", action: "#", method: "POST" }
-        })
-      ]
     )
   }
 ]
@@ -66954,13 +66959,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************!*\
   !*** ./resources/js/app/auth/vuex/actions.js ***!
   \***********************************************/
-/*! exports provided: register, login, fetchUser, setToken, checkTokenExists, clearAuth, clearErrors, sayHi */
+/*! exports provided: register, login, logout, fetchUser, setToken, checkTokenExists, clearAuth, clearErrors, sayHi */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "register", function() { return register; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "login", function() { return login; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUser", function() { return fetchUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setToken", function() { return setToken; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkTokenExists", function() { return checkTokenExists; });
@@ -67009,16 +67015,22 @@ var login = function login(_ref3, _ref4) {
     context.ready = true;
   });
 };
-var fetchUser = function fetchUser(_ref5) {
-  var commit = _ref5.commit;
+var logout = function logout(_ref5) {
+  var dispatch = _ref5.dispatch;
+  return axios.post('/api/logout').then(function () {
+    dispatch('clearAuth');
+  });
+};
+var fetchUser = function fetchUser(_ref6) {
+  var commit = _ref6.commit;
   return axios.get('/api/me').then(function (response) {
     commit('setAuthenticated', true);
     commit('setUserData', response.data.data);
   });
 };
-var setToken = function setToken(_ref6, token) {
-  var commit = _ref6.commit,
-      dispatch = _ref6.dispatch;
+var setToken = function setToken(_ref7, token) {
+  var commit = _ref7.commit,
+      dispatch = _ref7.dispatch;
 
   if (Object(lodash__WEBPACK_IMPORTED_MODULE_1__["isEmpty"])(token)) {
     return dispatch('checkTokenExists').then(function (token) {
@@ -67029,9 +67041,9 @@ var setToken = function setToken(_ref6, token) {
   commit('setToken', token);
   Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["setHttpToken"])(token);
 };
-var checkTokenExists = function checkTokenExists(_ref7) {
-  var commit = _ref7.commit,
-      dispatch = _ref7.dispatch;
+var checkTokenExists = function checkTokenExists(_ref8) {
+  var commit = _ref8.commit,
+      dispatch = _ref8.dispatch;
   return localforage__WEBPACK_IMPORTED_MODULE_2___default.a.getItem('authtoken').then(function (token) {
     if (Object(lodash__WEBPACK_IMPORTED_MODULE_1__["isEmpty"])(token)) {
       return Promise.reject('NO_STORAGE_TOKEN');
@@ -67040,8 +67052,8 @@ var checkTokenExists = function checkTokenExists(_ref7) {
     return Promise.resolve(token);
   });
 };
-var clearAuth = function clearAuth(_ref8) {
-  var commit = _ref8.commit;
+var clearAuth = function clearAuth(_ref9) {
+  var commit = _ref9.commit;
   commit('setAuthenticated', false);
   commit('setUserData', null);
   commit('setToken', null);
@@ -67050,9 +67062,9 @@ var clearAuth = function clearAuth(_ref8) {
 var clearErrors = function clearErrors(context) {
   context.errors = [];
 };
-var sayHi = function sayHi(_ref9, hi) {
-  var commit = _ref9.commit,
-      dispatch = _ref9.dispatch;
+var sayHi = function sayHi(_ref10, hi) {
+  var commit = _ref10.commit,
+      dispatch = _ref10.dispatch;
   return alert(hi);
 };
 
@@ -67781,7 +67793,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-console.log(_app_index__WEBPACK_IMPORTED_MODULE_2__["routes"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _app_index__WEBPACK_IMPORTED_MODULE_2__["routes"],

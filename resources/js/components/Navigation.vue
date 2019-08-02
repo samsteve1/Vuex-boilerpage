@@ -34,19 +34,13 @@
                             
                             <li class="nav-item dropdown" v-if="user.authenticated">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  {{ user.data.name }}</span> <span class="caret"></span>
+                                  {{ user.data.name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="#" @click.prevent="signout">
                                        Logout
                                     </a>
-
-                                    <form id="logout-form" action="#" method="POST" style="display: none;">
-                                     
-                                    </form>
                                 </div>
                             </li>
                       
@@ -58,12 +52,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     computed: mapGetters({
         user: 'auth/user'
     }),
+    methods: {
+        ...mapActions({
+            logout: 'auth/logout'
+        }),
+        signout () {
+            this.logout().then(() => {
+                this.$router.replace({ name: 'home' })
+            })
+        }
+    },
     
 }
 </script>

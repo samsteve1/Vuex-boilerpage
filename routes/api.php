@@ -8,6 +8,5 @@ Route::post('/logout', 'Auth\AuthController@logout');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('/me', 'Auth\AuthController@me');
-
     Route::get('/timeline', 'TimelineController@index');
 });
